@@ -1,8 +1,9 @@
 FROM ruby:2.3.3
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
-RUN mkdir /your_app_rails
-WORKDIR /your_app_rails
-ADD Gemfile /your_app_rails/Gemfile
-ADD Gemfile.lock /your_app_rails/Gemfile.lock
+ENV REDIS_SIDEKIQ_URL redis://redis:6379/0
+RUN mkdir /new-safety-emergency-web
+WORKDIR /new-safety-emergency-web
+ADD Gemfile /new-safety-emergency-web/Gemfile
+ADD Gemfile.lock /new-safety-emergency-web/Gemfile.lock
 RUN bundle install
-ADD . /your_app_rails
+ADD . /new-safety-emergency-web
