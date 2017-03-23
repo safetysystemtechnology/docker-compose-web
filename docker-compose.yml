@@ -1,0 +1,30 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    restart: always
+  web:
+    depends_on:
+      - 'db'
+      - 'redis'
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/your_app_rails
+    ports:
+      - "3000:3000"
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - '7479:7479'
+  worker:
+    depends_on:
+      - 'redis'
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/your_app_rails
+    links:
+      - redis
+      - web
