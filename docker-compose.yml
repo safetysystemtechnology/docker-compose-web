@@ -1,28 +1,33 @@
-version: '2'
+version: '3'
 services:
   db:
     image: postgres
+    ports:
+      - "5432:5432"
 
-  app: &app_base
+  web:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
-      - .:/new-safety-emergency-web
+      - .:/bioric-web
     ports:
       - "3000:3000"
     depends_on:
       - db
+    env_file:
+      - .env
 
   redis:
     image: redis:3.2-alpine
-    command: redis-server
-#    ports:
-#      - '7479:7479'
+    command: redis-server --port 7479
+    ports:
+      - "7479:7479"
 
   sidekiq:
     build: .
     command: bundle exec sidekiq
-    links:
+    depends_on:
       - db
       - redis
-
+    env_file:
+      - .env
