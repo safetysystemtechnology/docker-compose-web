@@ -16,6 +16,15 @@ services:
       - db
     env_file:
       - .env
+      
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    links:
+      - web
+    ports:
+      - "80:80"
 
   redis:
     image: redis:3.2-alpine
