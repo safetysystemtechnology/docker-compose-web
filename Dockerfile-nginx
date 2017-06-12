@@ -2,7 +2,7 @@ FROM nginx
 
 RUN apt-get update -qq && apt-get -y install apache2-utils
 
-ENV RAILS_ROOT /var/www/new-safety-emergency-web
+ENV RAILS_ROOT /your_application_path
 
 WORKDIR $RAILS_ROOT
 
